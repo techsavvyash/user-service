@@ -1,13 +1,18 @@
 {
-  "name": "user-service",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
-  "private": true,
-  "license": "UNLICENSED",
+  "name": "@techsavvyash/user-service",
+  "version": "0.0.2",
+  "description": "APIs for user management in samagra microservices.",
+  "author": "Team SamagraX (https://github.com/Samagra-Development)",
+  "private": false,
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "nest build",
+    "build": "tsc --project tsconfig.build.json",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
