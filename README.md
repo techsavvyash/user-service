@@ -6,9 +6,11 @@
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 # User Service
+
 An OIDC compliant extensible user authentication and authorization service that includes key features such as passwordless authentication and attribute based access control (ABAC). It is written in [Nest JS](https://github.com/nestjs/nest) & using Fusion Auth as the underlying service for all User Management related tasks.
 
 ## Features
+
 - CRUD support for respective Fusion Auth Applications
 - Authentication(Username/Password combo) for Fusion Auth Users
 - Passwordless (OTP based) authentication
@@ -16,6 +18,7 @@ An OIDC compliant extensible user authentication and authorization service that 
 - CRUD supporting creation/updation of records on 3rd party Hasura using Generic Config
 
 ## Development
+
 #### Installation
 
 ```bash
@@ -41,7 +44,9 @@ $ yarn start:prod
 ```
 
 ## Deployment
+
 You can use docker image directly for production environment setup. A sample `docker-compose.yml` file should look like:
+
 ```
 version: "3"
 
@@ -72,6 +77,7 @@ $ yarn run test:watch ./src/user/sms/gupshup/gupshup.service.spec.ts
 ```
 
 ## Add a sample service (Generic Config)
+
 ```bash
 # open .env file
 $ vi .env
@@ -86,11 +92,13 @@ APP_application_id={"host": "dummy.com", "apiKey": "zse12344@#%ddsr", "encryptio
 $ docker-compose down
 $ docker-compose up -d --build
 ```
-Note: In variable `APP_application_id`, **"APP_"** is the prefix and **"application_id"** is the UUID of Fusion Auth application with hyphen("-") replaced with underscore("_"). E.g. if application id is: `0000-0000-0000-0000` then the variable name must be: `APP_0000_0000_0000_0000`
+
+Note: In variable `APP_application_id`, **"APP\_"** is the prefix and **"application_id"** is the UUID of Fusion Auth application with hyphen("-") replaced with underscore("\_"). E.g. if application id is: `0000-0000-0000-0000` then the variable name must be: `APP_0000_0000_0000_0000`
 
 ### JSON config
+
 | Variable              | Description                                                                                                                                                            |
-|-----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `host`                | Fusion Auth Host. e.g. http://localhost:9011 or http://example.com                                                                                                     |
 | `apiKey`              | Fusion Auth API key to use for the Fusion Auth APIs being access via User Service. This key will be ignored if header `Authorization` header is passed in the request. |
 | `encryption.enabled`  | Boolean flag to enabled/disable encryption.                                                                                                                            |
@@ -98,6 +106,27 @@ Note: In variable `APP_application_id`, **"APP_"** is the prefix and **"applicat
 | `hasura.graphql_url`  | Hasura Graphql URL for custom mutation calls to be made on hit of certain APIs.                                                                                        |
 | `hasura.admin_secret` | Hasura Admin Secret.                                                                                                                                                   |
 | `hasura.mutations`    | A JSON object containing `key: value`; where `key` is the name of mutation & `value` contains the query/mutation for the Graphql call.                                 |
+
+## User-Service as a Package (USaaP)
+
+This fork of user-service has been modified to act as a npm package which can then be used in other nestJS projects directly, something similar to [willsoto/nestjs-prometheus](https://github.com/willsoto/nestjs-prometheus).
+
+To use this package you can follow the following steps:
+
+1. Install the package using `npm install @techsavvyash/user-service` or `yarn add @techsavvyash/user-service` or `pnpm install @techsavvyash/user-service`.
+2. Import the required module from the package. The below sample enables the `dst` and `user` login APIs is shown below:
+
+```ts
+import { Module } from '@nestjs/common';
+import { dst, user } from '@techsavvyash/user-service';
+
+@Module({
+  imports: [dst.DstModule, user.UserModule],
+})
+export class AppModule {}
+```
+
+Note: Due to the great architecture of NestJS[https://github.com/nestjs] this package does not need any specific cofiguration package to be passed to the modules, instead all the required the environment variables can be added to the `.env` file of the using package.
 
 ## Postman Collection
 
